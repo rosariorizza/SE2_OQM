@@ -42,7 +42,6 @@ The Office Queue Management System is a web-based application designed to stream
 
    ```bash
    git clone https://github.com/rosariorizza/SE2_OQM.git
-
-   ```
+    ```
 
    
