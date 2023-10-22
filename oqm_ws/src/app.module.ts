@@ -38,7 +38,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         password: configService.get('PASSWORD_DB'),
         database: configService.get('NAME_DB'),
         logging: configService.get('TYPEORM_LOGGING'),
-        entities: configService.get('TYPEORM_ENTITIES'),
+        entities: [configService.get('TYPEORM_ENTITIES')],
         synchronize: configService.get('TYPEORM_SYNC'),
       }),
       inject: [ConfigService],
