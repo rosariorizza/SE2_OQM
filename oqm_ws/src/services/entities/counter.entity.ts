@@ -1,24 +1,21 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { ServiceTypeEnum } from '../enums/service-type.enum';
+import { CounterTypeEnum } from '../enums/counter-type.enum';
 import { CounterServiceEntity } from './counter-service.entity';
 
-@Entity({ name: 'service' })
-export class ServiceEntity {
+@Entity({ name: 'counter' })
+export class CounterEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255 })
   description: string;
 
   @Column({
     type: 'enum',
-    enum: ServiceTypeEnum,
-    default: ServiceTypeEnum.CUSTOMER_SUPPORT,
+    enum: CounterTypeEnum,
+    nullable: false,
   })
-  type: ServiceTypeEnum;
-
-  @Column({ type: 'bigint', nullable: false })
-  time: number;
+  type: CounterTypeEnum;
 
   @OneToMany(
     () => CounterServiceEntity,
