@@ -6,7 +6,7 @@ import NotFound from './components/NotFoundComponent';
 import Customer from './components/CustomerComponent';
 import Login from './components/AuthComponents';
 import { useState } from 'react';
-import Queue from './components/QueueComponent.1';
+import Queue from './components/QueueComponent';
 import { AdminDashboard, CounterOfficerDashboard } from './components/DashboardComponent';
 
 
