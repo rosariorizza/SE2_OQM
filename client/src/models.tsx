@@ -48,3 +48,11 @@ export enum UserRoleEnum {
 
 // #endregion
 
+// #region Time
+export interface Time{
+    hour: number;
+    minutes: number;
+}
+
+// #endregion
+
