@@ -153,14 +153,14 @@ const getWaitingTime = async (service: Service) => {
 
 // #region Queue
 
-const insertIntoQueque = async (service: Service) => {
+const insertIntoQueue = async (service: Service) => {
   const response = await fetch(`${SERVER_URL}/queque/${service.type}`, {
     method: 'POST'
   });
   if (response.ok) {
     //returns the user's waiting number
-    const customer: number = await response.json(); 
-    return customer;
+    const customerID: number = await response.json(); 
+    return customerID;
   } else {
     throw new Error('Internal server error');
   }
@@ -188,7 +188,7 @@ const API = {
     getServices, getService, updateService, createService, deleteService,
     getUsers, getUser, createUser, updateUser, deleteUser,
     getWaitingTime,
-    insertIntoQueque, callNextCustomer
+    insertIntoQueue, callNextCustomer
 };
 
 export default API;
