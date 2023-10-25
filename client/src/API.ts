@@ -131,8 +131,10 @@ const callNextCustomer = async (counterId: number) => {
       method: 'POST'
     });
     if (response.ok) {
-      const customer: User = await response.json();
-      return customer;
+      //const customer: User = await response.json();
+      console.log("Customer called");
+      //return customer;
+      return 1;
     } else {
       throw new Error('Internal server error');
     }
@@ -161,7 +163,7 @@ const getWaitingTime = async (service: Service) => {
 
 const API = {
     getServices, getService, updateService, createService, deleteService,
-    getUsers, getUser, createUser, updateUser, deleteUser, callNextCustomer
+    getUsers, getUser, createUser, updateUser, deleteUser, callNextCustomer, getWaitingTime
 };
 
 export default API;
