@@ -1,4 +1,4 @@
-import { Service, ServiceCreation, User, UserCreation, Time} from "./models";
+import { Service, ServiceCreation, User, UserCreation} from "./models";
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -126,7 +126,7 @@ const deleteUser = async (id: number) => {
       throw new Error('Internal server error');
 }
 
-const callNextCustomer = async (counterId: number) => {
+/*const callNextCustomer = async (counterId: number) => {
     const response = await fetch(`${SERVER_URL}/services/${counterId}/next`, {
       method: 'POST'
     });
@@ -138,7 +138,7 @@ const callNextCustomer = async (counterId: number) => {
     } else {
       throw new Error('Internal server error');
     }
-  };
+  };*/
 
 // #endregion
 
@@ -189,7 +189,7 @@ const callNextCustomer = async (counterId: number) => {
     const remaining: number = await response.json(); 
     if(remaining != 0)
       console.log("Customer number "+remaining+" to Counter #"+counterId);
-    return;
+    return 1;
   } else {
     throw new Error('Internal server error');
   }
