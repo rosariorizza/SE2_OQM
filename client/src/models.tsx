@@ -3,12 +3,14 @@
 export interface Service{
     id: number;
     description: string;
-    type: ServiceTypeEnum
+    //type: ServiceTypeEnum
+    type: string
 }
 
 export interface ServiceCreation{
     description: string;
-    type: ServiceTypeEnum
+    //type: ServiceTypeEnum
+    type: string
 }
 
 export enum ServiceTypeEnum {
@@ -42,6 +44,14 @@ export enum UserRoleEnum {
     CUSTOMER = 'CUSTOMER',
     COUNTER_OFFICER = 'COUNTER_OFFICER',
     ADMINISTRATOR = 'ADMINISTRATOR',
+}
+
+// #endregion
+
+// #region Time
+export interface Time{
+    hour: number;
+    minutes: number;
 }
 
 // #endregion
