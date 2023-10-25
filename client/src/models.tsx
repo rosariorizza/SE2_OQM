@@ -3,12 +3,14 @@
 export interface Service{
     id: number;
     description: string;
-    type: ServiceTypeEnum
+    //type: ServiceTypeEnum
+    type: string
 }
 
 export interface ServiceCreation{
     description: string;
-    type: ServiceTypeEnum
+    //type: ServiceTypeEnum
+    type: string
 }
 
 export enum ServiceTypeEnum {
