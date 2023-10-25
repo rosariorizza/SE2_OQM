@@ -6,7 +6,7 @@ function CounterOfficerDashboard(){
 
 function AdminDashboard(){
     return (
-        <h1>Counter Officier Dashboard</h1>
+        <h1>Admin Dashboard</h1>
     )
 }
 

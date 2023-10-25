@@ -13,7 +13,7 @@ import { AdminDashboard, CounterOfficerDashboard } from './components/DashboardC
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
 

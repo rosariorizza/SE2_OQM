@@ -1,4 +1,4 @@
-import { Service, ServiceCreation, User, UserCreation } from "./models";
+import { Service, ServiceCreation, User, UserCreation} from "./models";
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -126,13 +126,26 @@ const deleteUser = async (id: number) => {
       throw new Error('Internal server error');
 }
 
+const callNextCustomer = async (counterId: number) => {
+    const response = await fetch(`${SERVER_URL}/services/${counterId}/next`, {
+      method: 'POST'
+    });
+    if (response.ok) {
+      const customer: User = await response.json();
+      return customer;
+    } else {
+      throw new Error('Internal server error');
+    }
+  };
+
+
 // #endregion
 
 
 
 const API = {
     getServices, getService, updateService, createService, deleteService,
-    getUsers, getUser, createUser, updateUser, deleteUser
+    getUsers, getUser, createUser, updateUser, deleteUser, callNextCustomer
 };
 
 export default API;
