@@ -4,6 +4,7 @@ import { Container} from 'react-bootstrap';
 import NavHeader from './components/NavbarComponent';
 import NotFound from './components/NotFoundComponent';
 import Customer from './components/CustomerComponent';
+import TemporaryHome from './components/TemporaryHomeComponent';
 import Login from './components/AuthComponents';
 import { useState } from 'react';
 import Queue from './components/QueueComponent';
@@ -28,12 +29,13 @@ function App() {
             <Outlet />
           </Container>
         </>} >
-        <Route index
-          element={<Customer/>} />
+       <Route index element={<TemporaryHome setLoggedIn={setLoggedIn} setIsAdmin={setIsAdmin} />} />
         <Route path='login'
               element={<Login/>} />
         <Route path='queue'
               element={<Queue/>} />
+        <Route path='customer'
+              element={<Customer/>} />
 
 
         { loggedIn && isAdmin &&
