@@ -142,12 +142,15 @@ const callNextCustomer = async (counterId: number) => {
 
 // #endregion
 
+
+
 // #region Time
 
 const getWaitingTime = async (service: Service) => {
     //TODO: create the queque management and change the url to get the queque
-    // the queque should have all the field required for the Formula
-    const response = await fetch(SERVER_URL + `/api/queue/${service.id}`, {
+    // the queque should have all the field required for the Formula.
+    // A safer option would be to implement the computation on the server side and just return the time
+    const response = await fetch(SERVER_URL + `/api/queue/${service.type}`, {
         method: 'GET'
     });
     if(response.ok) {
@@ -161,9 +164,45 @@ const getWaitingTime = async (service: Service) => {
 // #endregion
 
 
+
+// #region Queue
+
+const insertIntoQueue = async (service: Service) => {
+  const response = await fetch(`${SERVER_URL}/queque/${service.type}`, {
+    method: 'POST'
+  });
+  if (response.ok) {
+    //returns the user's waiting number
+    const customerID: number = await response.json(); 
+    return customerID;
+  } else {
+    throw new Error('Internal server error');
+  }
+};
+
+const callNextCustomer = async (counterId: number) => {
+  const response = await fetch(`${SERVER_URL}/services/${counterId}/next`, {
+    method: 'DELETE'
+  });
+  if (response.ok) {
+    //returns the next customer for the counter (aka removes it from the queue)
+    const remaining: number = await response.json(); 
+    if(remaining != 0)
+      console.log("Customer number "+remaining+" to Counter #"+counterId);
+    return;
+  } else {
+    throw new Error('Internal server error');
+  }
+};
+
+// #endregion
+
+
 const API = {
     getServices, getService, updateService, createService, deleteService,
-    getUsers, getUser, createUser, updateUser, deleteUser, callNextCustomer, getWaitingTime
+    getUsers, getUser, createUser, updateUser, deleteUser,
+    getWaitingTime,
+    insertIntoQueue, callNextCustomer
 };
 
 export default API;
