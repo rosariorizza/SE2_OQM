@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { RouterModule } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { QueueManagementModule } from './queue-management/queue-management.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ServicesModule,
     UsersModule,
     ServicesModule,
+    QueueManagementModule,
     RouterModule.register([
       {
         path: 'api',
