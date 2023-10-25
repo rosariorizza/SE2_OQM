@@ -44,4 +44,11 @@ The Office Queue Management System is a web-based application designed to stream
    git clone https://github.com/rosariorizza/SE2_OQM.git
     ```
 
+## Launch the tests
+1. For the client APIs:
+    ```
+    cd client
+    npm test
+    ```
+
    
