@@ -275,4 +275,82 @@ describe('callNextCustomer', () => {
 
 // #region Counter
 //these methods needs rework for the path part
-// #endregion
+describe('getCounters', () => {
+  const mockCounters = [{ id: 1, name: 'Counter 1' }, { id: 2, name: 'Counter 2' }];
+
+  it('should return counters when the request is successful', async () => {
+    //Mock the fetch response for a successful request
+    fetchMock.mockResponse(JSON.stringify(mockCounters), { status: 200 });
+
+    //Call the function and expect the result
+    const result = await API.getCounters();
+
+    //Ensure the fetch function was called with the correct URL and method
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/counters`, {
+      method: 'GET',
+    });
+
+    //Ensure the result matches the mock counters
+    expect(result).toEqual(mockCounters);
+  });
+
+  it('should throw an error when the request fails', async () => {
+    //Mock the fetch response to simulate a failed request
+    fetchMock.mockResponse('', { status: 500 });
+
+    //Call the function and expect it to throw an error
+    await expect(API.getCounters()).rejects.toThrow('Internal server error');
+  });
+});
+
+describe('assignCounter', () => {
+  const mockServiceId = 1;
+  const mockCounterId = 1;
+
+  it('should succeed when the request is successful', async () => {
+    //Mock the fetch response for a successful request
+    fetchMock.mockResponse('', { status: 200 });
+
+    //Call the function and expect it to succeed (no error thrown)
+    await expect(API.assignCounter(mockServiceId, mockCounterId)).resolves.toBeUndefined();
+
+    //Ensure the fetch function was called with the correct URL
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/services/${mockServiceId}/counters/${mockCounterId}`);
+  });
+
+  it('should throw an error when the request fails', async () => {
+    //Mock the fetch response to simulate a failed request
+    fetchMock.mockResponse('', { status: 500 });
+
+    //Call the function and expect it to throw an error
+    await expect(API.assignCounter(mockServiceId, mockCounterId)).rejects.toThrow('Internal server error');
+  });
+});
+
+describe('removeCounter', () => {
+  const mockServiceId = 1;
+  const mockCounterId = 1;
+
+  it('should succeed when the request is successful', async () => {
+    //Mock the fetch response for a successful request
+    fetchMock.mockResponse('', { status: 200 });
+
+    //Call the function and expect it to succeed (no error thrown)
+    await expect(API.removeCounter(mockServiceId, mockCounterId)).resolves.toBeUndefined();
+
+    //Ensure the fetch function was called with the correct URL and method
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/services/${mockServiceId}/counters/${mockCounterId}`, {
+      method: 'DELETE',
+    });
+  });
+
+  it('should throw an error when the request fails', async () => {
+    //Mock the fetch response to simulate a failed request
+    fetchMock.mockResponse('', { status: 500 });
+
+    //Call the function and expect it to throw an error
+    await expect(API.removeCounter(mockServiceId, mockCounterId)).rejects.toThrow('Internal server error');
+  });
+});
+
+//#endregion

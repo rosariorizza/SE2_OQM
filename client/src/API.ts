@@ -201,7 +201,9 @@ const callNextCustomer = async (counterId: number) => {
 // #region Counter
 
 const getCounters = async () => {
-  const response = await fetch(SERVER_URL + '/api/counters');
+  const response = await fetch(SERVER_URL + '/api/counters', {
+    method: 'GET'
+  });
   if(response.ok) {
       const counters : Counter[] = await response.json();
       return counters;
@@ -211,7 +213,9 @@ const getCounters = async () => {
 }
 
 const assignCounter = async (serviceId: number, counterId: number) => {
-  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters/${counterId}`);
+  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters/${counterId}`, {
+    method: 'PATCH'
+  });
   if(response.ok) {
     return;
   }
