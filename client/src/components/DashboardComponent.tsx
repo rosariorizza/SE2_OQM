@@ -6,11 +6,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function CounterOfficerDashboard(){
     
-    let counter = 1;
+
+    const [counter, setCounter] = useState<Counter>();
+    const [counters, setCounters] = useState<Counter[]>([]);
+
+    useEffect(()=>{
+      API.getCounters().then((c)=>{
+        setCounters(c);
+      });
+    }, [])
+
 
     const handleButtonClick = async () => {
         try {
-          await API.callNextCustomer(counter);
+          console.log(counter?.type)
+          if(counter){
+            await API.callNextCustomer(counter.id);
+          }
         } catch (error) {
           console.error(error);
         }
@@ -22,8 +34,25 @@ function CounterOfficerDashboard(){
                 <Col>
                     <h2>Counter Officier Dashboard</h2>
                 </Col>
-                <Col>
-                    <Button variant="primary" onClick={handleButtonClick}>Button</Button>
+            </Row>
+            <Row>
+            <Form>
+              {counters.map((c) => (
+                <div key={c.id} className="mb-3">
+                  <Form.Check
+                    type='radio'
+                    id={c.type}
+                    label={c.type}
+                    name="counterType" 
+                    onChange={()=>setCounter(c)}
+                  />
+                </div>
+              ))}
+            </Form>
+            </Row>
+            <Row>
+            <Col>
+                    <Button variant="primary" onClick={handleButtonClick}>Next Customer</Button>
                 </Col>
             </Row>
         </div>        
@@ -67,8 +96,8 @@ function ServiceManagement(){
           <Row><h1>Service Management</h1></Row>
           {showButtons?
             <>
-            <Row><Button variant='success' className="my-5" onClick={() => navigate('new')}>New Service</Button></Row>
-            <Row><Button variant='success' className="my-5" onClick={ () =>{
+            <Row><Button variant='success' className="mb-3 mt-5" onClick={() => navigate('new')}>New Service</Button></Row>
+            <Row><Button variant='primary' className="mb-5" onClick={ () =>{
                 let servicesId: number[] = [];
                 let i:number = 0;
                 while (i < services.length){
@@ -116,7 +145,7 @@ function ServiceManagement(){
                 </Form>
                 </td>
                 <td><Button variant="primary" onClick={() => navigate(s.id.toString())}>Edit</Button></td>
-                <td><Button variant="danger" onClick={() => {API.deleteService(s.id); setFetchServices(!fetchServices);}}>Delete</Button></td>
+                <td><Button variant="danger" onClick={async () => {if(s.counters.length!=0){alert('Cannot delete service served by counters'); return;};await API.deleteService(s.id); setFetchServices(!fetchServices);}}>Delete</Button></td>
             </tr>}
         })}
         </tbody>

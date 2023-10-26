@@ -204,9 +204,9 @@ const callNextCustomer = async (counterId: number) => {
     //returns the next customer for the counter (aka removes it from the queue)
     const next: number = await response.json(); 
     if(next != 0)
-      console.log("Customer number "+next+" to Counter #"+counterId);
+      alert("Customer number "+next+" to Counter #"+counterId);
     else
-      console.log("No customers to serve now");
+      alert("No customers to serve now");
     return next; 
   } else {
     throw new Error('Internal server error');
