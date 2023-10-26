@@ -6,7 +6,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 function CounterOfficerDashboard(){
     
-    let counter = 0;
+    let counter = 1;
 
     const handleButtonClick = async () => {
         try {
