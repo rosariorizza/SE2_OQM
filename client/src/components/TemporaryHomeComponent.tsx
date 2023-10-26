@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 interface TemporaryHomeProps {
@@ -26,9 +27,9 @@ function TemporaryHome({ setLoggedIn, setIsAdmin }: TemporaryHomeProps ) {
 
   return (
     <div>
-      <button onClick={goToCustomer}>Go to Customer</button>
-      <button onClick={goToDashboardAsAdmin}>Go to Dashboard as Admin</button>
-      <button onClick={goToDashboardAsUser}>Go to Dashboard as User</button>
+      <Button className='mx-1' onClick={goToCustomer}>Go to Customer</Button>
+      <Button className='mx-1'onClick={goToDashboardAsAdmin}>Go to Dashboard as Admin</Button>
+      <Button className='mx-1'onClick={goToDashboardAsUser}>Go to Dashboard as User</Button>
     </div>
   );
 }

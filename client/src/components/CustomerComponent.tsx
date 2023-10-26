@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Service, Time } from '../models';
 import API from '../API';
+import { Button } from 'react-bootstrap';
 
 function Customer() {
   const [services, setServices] = useState<Service[]>([]);
@@ -64,12 +65,12 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ services, showTime }) => {
           <tr key={index}>
             <td>{service.type}</td>
             <td>
-              <button
+              <Button className='mx-1'
                 style={{ backgroundColor: 'magenta' }}
                 onClick={() => showTime(service)}
               >
                 Show Time
-              </button>
+              </Button>
             </td>
           </tr>
         ))}
@@ -105,10 +106,10 @@ const WaitingTimeDisplay: React.FC<WaitingTimeDisplayProps> = ({
       <h2>Waiting Time: {waitingTime ? 
       `${waitingTime.hours}:${waitingTime.minutes}`
       : 'Loading...'}</h2>
-      <button onClick={() => {
+      <Button className='mx-1' onClick={() => {
         accept(true);
-      }}>Accept</button>
-      <button onClick={goBack}>Go Back</button>
+      }}>Accept</Button>
+      <Button  className='mx-1' onClick={goBack}>Go Back</Button>
     </div>
   );
 };
@@ -129,7 +130,7 @@ const AcceptAndShowServices: React.FC<WaitingTimeDisplayProps> = ({selectedServi
   return (
     <div>
       <h2>Your number: {userId ? `${userId}` : 'Ooops, something went wrong...'}</h2>
-      <button onClick={() => {accept(false); goBack();}}>Go Back</button>
+      <Button onClick={() => {accept(false); goBack();}}>Go Back</Button>
     </div>
   );
 };
