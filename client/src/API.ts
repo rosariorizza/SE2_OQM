@@ -1,4 +1,4 @@
-import { Counter, Service, ServiceCreation, User, UserCreation} from "./models";
+import { Counter, Service, ServiceCreation, User, Time, UserCreation} from "./models";
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -153,7 +153,10 @@ const getWaitingTime = async (service: Service) => {
     });
     if(response.ok) {
        //Compute formula, the epress the time as 2 numbers: hours and minutes
-        return {hours:1, minutes:1};
+        const time: Time = await response.json();
+        console.log(time);
+        return time;
+
     }
     else {
       throw new Error('Internal server error');

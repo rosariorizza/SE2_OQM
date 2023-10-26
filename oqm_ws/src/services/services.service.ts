@@ -120,7 +120,7 @@ export class ServicesService {
     }
 
     const waitingTime = t_r * ((n_r.length / sum) + 0.5);
-
+    console.log(waitingTime);
     return waitingTime;
   }
 

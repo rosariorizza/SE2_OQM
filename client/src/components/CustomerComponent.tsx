@@ -94,6 +94,7 @@ const WaitingTimeDisplay: React.FC<WaitingTimeDisplayProps> = ({
   useEffect(() => {
     const getWaitingTime = async () => {
       const waitingTime: Time = await API.getWaitingTime(selectedService);
+      console.log(waitingTime);
       setWaitingTime(waitingTime);
     };
     getWaitingTime();
@@ -101,7 +102,7 @@ const WaitingTimeDisplay: React.FC<WaitingTimeDisplayProps> = ({
 
   return (
     <div>
-      <h2>Waiting Time: {waitingTime ? `${waitingTime.hour}:${waitingTime.minutes}` : 'Loading...'}</h2>
+      <h2>Waiting Time: {waitingTime ? `${waitingTime.hours}:${waitingTime.minutes}` : 'Loading...'}</h2>
       <button onClick={() => {
         accept(true);
       }}>Accept</button>
