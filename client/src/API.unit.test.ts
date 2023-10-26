@@ -204,6 +204,43 @@ describe('getWaitingTime', () => {
 
 // #region Queue
 
+describe('generateQueues', () => {
+  const mockIds = [1, 2, 3];
+
+  beforeEach(() => {
+    fetchMock.resetMocks();
+  });
+
+  it('should make a POST request with the correct data and return the response when successful', async () => {
+    // Mock the fetch response for a successful request
+    fetchMock.mockResponse(JSON.stringify({ createdQueues: 3 }), { status: 200 });
+
+    // Call the function and expect the result
+    const result = await API.generateQueues(mockIds);
+
+    // Ensure the fetch function was called with the correct URL and method
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/queue`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ids: mockIds }),
+    });
+
+    // Ensure the result matches the expected response
+    expect(result).toEqual({ createdQueues: 3 });
+  });
+
+  it('should throw an error when the request fails', async () => {
+    // Mock the fetch response to simulate a failed request
+    fetchMock.mockResponse('', { status: 500 });
+
+    // Call the function and expect it to throw an error
+    await expect(API.generateQueues(mockIds)).rejects.toThrow('Internal server error');
+  });
+});
+
+
 describe('insertIntoQueue', () => {
   const mockService = { id: 1, description: 'Service 1',  type: "Service1", time: 10 };
   const mockCustomerID = 123;
@@ -216,7 +253,7 @@ describe('insertIntoQueue', () => {
     const result = await API.insertIntoQueue(mockService);
 
     //Ensure the fetch function was called with the correct URL and method
-    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/queque/${mockService.id}`, {
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/queue/${mockService.id}`, {
       method: 'PUT',
     });
 

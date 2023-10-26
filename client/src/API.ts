@@ -169,13 +169,11 @@ const getWaitingTime = async (service: Service) => {
 // #region Queue
 
 const generateQueues = async (ids: number[]) => {
-  console.log(ids);
   const response = await fetch(`${SERVER_URL}/api/queue`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ids: ids})
   });
-  console.log(response);
   if (response.ok) {
     //returns the number of created queues
     return await response.json(); 

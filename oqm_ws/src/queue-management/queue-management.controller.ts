@@ -22,8 +22,10 @@ export class QueueManagementController {
 
   @Post()
   createQueues(@Body() createQueuesDto: CreateQueuesDto) {
-    for (let current_id in createQueuesDto.ids){
-      this.queueService.createQueue(+current_id);
+    let i: number = 0;
+    while (i < createQueuesDto.ids.length){
+      this.queueService.createQueue(+createQueuesDto.ids[i]);
+      i++;
     }
     return createQueuesDto.ids.length;
   }
