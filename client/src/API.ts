@@ -26,7 +26,7 @@ const createService = async (service: ServiceCreation) => {
     const response = await fetch(`${SERVER_URL}/api/services`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...service, time: 0}),
+        body: JSON.stringify(service),
         //should be fixed
       });
     if(response.ok) {
@@ -168,8 +168,22 @@ const getWaitingTime = async (service: Service) => {
 
 // #region Queue
 
+const generateQueues = async (ids: number[]) => {
+  const response = await fetch(`${SERVER_URL}/api/queue`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ids: ids})
+  });
+  if (response.ok) {
+    //returns the number of created queues
+    return await response.json(); 
+  } else {
+    throw new Error('Internal server error');
+  }
+};
+
 const insertIntoQueue = async (service: Service) => {
-  const response = await fetch(`${SERVER_URL}/api/queque/${service.id}`, {
+  const response = await fetch(`${SERVER_URL}/api/queue/${service.id}`, {
     method: 'PUT'
   });
   if (response.ok) {
@@ -187,10 +201,11 @@ const callNextCustomer = async (counterId: number) => {
   });
   if (response.ok) {
     //returns the next customer for the counter (aka removes it from the queue)
-    const remaining: number = await response.json(); 
-    if(remaining != 0)
-      console.log("Customer number "+remaining+" to Counter #"+counterId);
-    return 1;
+    const next: number = await response.json(); 
+    if(next != 0)
+      console.log("Customer number "+next+" to Counter #"+counterId);
+    else
+      console.log("No customers to serve now");
   } else {
     throw new Error('Internal server error');
   }
@@ -201,7 +216,19 @@ const callNextCustomer = async (counterId: number) => {
 // #region Counter
 
 const getCounters = async () => {
-  const response = await fetch(SERVER_URL + '/api/counters', {
+  const response = await fetch(SERVER_URL + '/api/services/counters', {
+    method: 'GET'
+  });
+  if(response.ok) {
+      const counters : Counter[] = await response.json();
+      return counters;
+  }
+  else
+    throw new Error('Internal server error');
+}
+
+const getAssignedCounters = async (serviceId: number) => {
+  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters`, {
     method: 'GET'
   });
   if(response.ok) {
@@ -240,8 +267,9 @@ const API = {
     getServices, getService, updateService, createService, deleteService,
     getUsers, getUser, createUser, updateUser, deleteUser,
     getWaitingTime,
-    insertIntoQueue, callNextCustomer,
-    getCounters, assignCounter, removeCounter
+    generateQueues, insertIntoQueue, callNextCustomer,
+    getCounters, assignCounter, removeCounter, getAssignedCounters
+
 };
 
 export default API;

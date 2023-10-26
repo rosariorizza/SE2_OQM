@@ -55,16 +55,11 @@ export class ServicesService {
   }
 
   async findCounterForService(id: number) {
-    const service = await this.servicesRepository.findOne({
-      where: { id },
-      relations: ['counterServices', 'counterServices.counter'],
+    const counterServices = await this.counterServicesRepository.find({
+      where: { serviceId: id },
+      relations: ['counter'],
     });
-
-    if (!service) {
-      throw new NotFoundException(`Service with ID ${id} not found`);
-    }
-
-    return service.counterServices.map((cs) => ({
+    return counterServices.map((cs) => ({
       id: cs.counter.id,
       description: cs.counter.description,
       type: cs.counter.type,
