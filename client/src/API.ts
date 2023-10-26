@@ -148,15 +148,13 @@ const deleteUser = async (id: number) => {
 // #region Time
 
 const getWaitingTime = async (service: Service) => {
-    //TODO: create the queque management and change the url to get the queque
-    // the queque should have all the field required for the Formula.
-    // A safer option would be to implement the computation on the server side and just return the time
-    const response = await fetch(SERVER_URL + `/api/queue/${service.type}`, {
+    console.log("Test");
+    console.log(service);
+    const response = await fetch(SERVER_URL + `/api/services/${service.id}/estimatedTime`, {
         method: 'GET'
     });
     if(response.ok) {
-       //Compute formula, the epress the time as 2 numbers: hours and minutes
-        return {hour:1, minutes:1};
+       console.log(response);
     }
     else
       throw new Error('Internal server error');

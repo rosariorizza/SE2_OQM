@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServiceEntity } from './entities/service.entity';
 import { CounterServiceEntity } from './entities/counter-service.entity';
 import { CounterEntity } from './entities/counter.entity';
+import { QueueManagementModule } from 'src/queue-management/queue-management.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CounterEntity } from './entities/counter.entity';
       CounterServiceEntity,
       CounterEntity,
     ]),
+    QueueManagementModule
   ],
   controllers: [ServicesController],
   providers: [ServicesService],

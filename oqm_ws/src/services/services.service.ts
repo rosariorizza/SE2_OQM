@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CounterServiceEntity } from './entities/counter-service.entity';
 import { CounterEntity } from './entities/counter.entity';
+import { QueueManagementService } from 'src/queue-management/queue-management.service';
 
 @Injectable()
 export class ServicesService {
@@ -16,6 +17,7 @@ export class ServicesService {
     private readonly countersRepository: Repository<CounterEntity>,
     @InjectRepository(CounterServiceEntity)
     private readonly counterServicesRepository: Repository<CounterServiceEntity>,
+    private readonly queueManagementService: QueueManagementService,
   ) {}
 
   create(createServiceDto: CreateServiceDto) {
@@ -75,5 +77,47 @@ export class ServicesService {
 
   assignServiceToCounter(serviceId: number, counterId: number) {
     return this.counterServicesRepository.save({ serviceId, counterId });
+  }
+
+  async getWaitingTime(id: number) { //qua dovrebbe prendere in input un servizio, non l'id soltanto
+    const service = await this.servicesRepository.findOne({
+      where: { id },
+      relations: ['counterServices', 'counterServices.counter'],
+    });
+
+    if (!service) {
+      throw new NotFoundException(`Service with ID ${id} not found`);
+    }
+
+    const t_r = service.time;
+    const n_r = this.queueManagementService.getQueueByServiceId(id);
+    const k_i = this.findAll()
+
+
+    /*const counters = service.counterServices.map((cs) => ({
+      k_i: cs.counter.counterServices.length, // number of different types of requests served by counter i
+      s_i_r: cs.counter.counterServices.some((cs) => cs.service.id === id) ? 1 : 0,
+    }));
+
+    const estimatedWaitingTime = this.calculateEstimatedWaitingTime(t_r, n_r, counters);
+    //console.log(estimatedWaitingTime);
+
+    return { estimatedWaitingTime };
+  }
+
+  private calculateEstimatedWaitingTime(t_r: number, n_r: number, counters: { k_i: number; s_i_r: number }[]) {
+    const numCounters = counters.length;
+    console.log(numCounters);
+
+    let sum = 0;
+    for (let i = 0; i < numCounters; i++) {
+      const k_i = counters[i].k_i;
+      const s_i_r = counters[i].s_i_r;
+      sum += 1 / (k_i * s_i_r);
+    }
+
+    const waitingTime = t_r * (n_r / (sum + 0.5));
+    return waitingTime;
+    */
   }
 }

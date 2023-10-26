@@ -26,6 +26,11 @@ export class ServicesController {
     return this.servicesService.findAll(counterId);
   }
 
+  @Get(':id/estimatedTime')
+  getEstimatedTime(@Param('id') id: number) {
+    return this.servicesService.getWaitingTime(id);
+  }
+
   @Get(':id/counters')
   findCounterForService(@Param('id') id: number) {
     return this.servicesService.findCounterForService(+id);

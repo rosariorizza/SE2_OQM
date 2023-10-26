@@ -1,23 +1,31 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ServiceEntity } from '../services/entities/service.entity';
+import { CounterServiceEntity } from '../services/entities/counter-service.entity';
+import { CounterEntity } from '../services/entities/counter.entity';
 
 @Injectable()
 export class QueueManagementService {
+  constructor(
+  ) {}
+
   private queueController = {};
 
   createQueue(serviceId: number) {
-    this.queueController[serviceId] = 0;
+    this.queueController[serviceId] = new Set();
   }
 
-  addUserToQueue(serviceId: number) {
-    if (this.queueController[serviceId] === undefined)
+  addUserToQueue(serviceId: number, userId: number) {
+    if (!this.queueController[serviceId])
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
-    this.queueController[serviceId] += 1;
+    this.queueController[serviceId].add(userId);
   }
 
-  removeUserFromQueue(serviceId: number) {
-    if (this.queueController[serviceId] === undefined)
+  removeUserFromQueue(serviceId: number, userId: number) {
+    if (!this.queueController[serviceId])
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
-    this.queueController[serviceId] -= 1;
+    this.queueController[serviceId].delete(userId);
   }
 
   removeQueue(serviceId: number) {
