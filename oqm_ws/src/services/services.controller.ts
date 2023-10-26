@@ -26,6 +26,11 @@ export class ServicesController {
     return this.servicesService.findAll(counterId);
   }
 
+  @Get('counters')
+  findAllCounters() {
+    return this.servicesService.findAllCounters();
+  }
+
   @Get(':id/counters')
   findCounterForService(@Param('id') id: number) {
     return this.servicesService.findCounterForService(+id);
@@ -52,5 +57,13 @@ export class ServicesController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.servicesService.remove(+id);
+  }
+
+  @Delete(':id/counters/:counterId')
+  deleteServiceFromCounter(
+    @Param('id') id: number,
+    @Param('counterId') counterId: number,
+  ) {
+    return this.servicesService.removeServiceFromCounter(+id, counterId);
   }
 }

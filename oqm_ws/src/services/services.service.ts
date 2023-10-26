@@ -22,6 +22,10 @@ export class ServicesService {
     return this.servicesRepository.save(createServiceDto);
   }
 
+  findAllCounters() {
+    return this.countersRepository.find();
+  }
+
   async findAll(counterId?: number) {
     if (counterId) {
       const counter = await this.countersRepository.findOne({
@@ -75,5 +79,9 @@ export class ServicesService {
 
   assignServiceToCounter(serviceId: number, counterId: number) {
     return this.counterServicesRepository.save({ serviceId, counterId });
+  }
+
+  removeServiceFromCounter(serviceId: number, counterId: number) {
+    return this.counterServicesRepository.delete({ serviceId, counterId });
   }
 }
