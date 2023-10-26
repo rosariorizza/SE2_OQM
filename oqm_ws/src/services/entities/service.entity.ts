@@ -1,5 +1,4 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { ServiceTypeEnum } from '../enums/service-type.enum';
 import { CounterServiceEntity } from './counter-service.entity';
 
 @Entity({ name: 'service' })
@@ -10,12 +9,8 @@ export class ServiceEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   description: string;
 
-  @Column({
-    type: 'enum',
-    enum: ServiceTypeEnum,
-    default: ServiceTypeEnum.CUSTOMER_SUPPORT,
-  })
-  type: ServiceTypeEnum;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  type: string;
 
   @Column({ type: 'bigint', nullable: false })
   time: number;

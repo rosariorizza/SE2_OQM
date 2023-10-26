@@ -1,7 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+/*
+//we'll need these in a moment
+import { CounterServiceEntity } from './entities/counter-service.entity';
+import { ServiceEntity } from './entities/service.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+*/
 
 @Injectable()
 export class QueueManagementService {
+  /*
+  constructor(
+    @InjectRepository(ServiceEntity)
+    private readonly servicesRepository: Repository<ServiceEntity>,
+    @InjectRepository(CounterServiceEntity)
+    private readonly counterServicesRepository: Repository<CounterServiceEntity>,
+  ) {}
+  */
   private queueController = {};
   //the ticket number is unique for the whole office
   private customersGlobalID: number = 0;
@@ -19,17 +34,24 @@ export class QueueManagementService {
     return this.customersGlobalID;
   }
 
-  callNextUser(counterID: number){
-    let serviceId = counterID;
+  async callNextUser(counterId: number){
+    /*
+    let serviceIds = await this.counterServicesRepository.find({
+      where: { counterId: counterId },
+    });
+    ...
+    console.log(serviceIds);
     //find services served by the counter
-    return this.removeUserFromQueue(serviceId);
+    console.log("CounterID:")
+    */
+    return this.removeUserFromQueue(counterId);
   }
 
   removeUserFromQueue(serviceId: number) {
     if (this.queueController[serviceId] === undefined)
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
     this.queueController[serviceId].pop();
-    return this.queueController[serviceId][this.queueController[serviceId].length];
+    return (this.queueController[serviceId])[this.queueController[serviceId].length-1];
   }
 
   removeQueue(serviceId: number) {
