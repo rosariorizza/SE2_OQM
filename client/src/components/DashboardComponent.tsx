@@ -6,14 +6,13 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 function CounterOfficerDashboard(){
     
-    let next = 0;
+    let counter = 0;
 
     const handleButtonClick = async () => {
         try {
-          const customer = await API.callNextCustomer(next);
+          const customer = await API.callNextCustomer(counter);
           if(customer){
-            next++;
-            //console.log(`Next customer: ${customer.toString()}`);
+            console.log(`Next customer: ${customer.toString()}`);
           }
           
         } catch (error) {
@@ -38,6 +37,7 @@ function CounterOfficerDashboard(){
 function ServiceManagement(){
 
     const [services, setServices] = useState<Service[]>([]);
+    const [showButtons, setShowButtons] = useState(true);
     const [fetchServices, setFetchServices] = useState<boolean>(false);
     const [counters, setCounters] = useState<Counter[]>([{type: "COUNTER 1", description : "aaaa", id:1}, {type: "COUNTER 2", description : "bbbb", id:2}]);
     const navigate = useNavigate();
@@ -45,20 +45,16 @@ function ServiceManagement(){
     const serviceHandler = async () =>{
       let serviceResponse = await API.getServices()
       setServices(serviceResponse);
-      return; //TODO waiting for API
       let counterResponse = await API.getCounters()
       setCounters(counterResponse)
-
     }
 
     useEffect(()=>{
-      setFetchServices(!fetchServices);
       serviceHandler()
     }, [fetchServices]);
 
     const assignHandler = async (service: Service,  counter: Counter, assigning: boolean) =>{
       console.log(`${service.type} being served by ${counter.type} is now ${assigning}` )
-      return; //TODO waiting for API
       if(assigning) await API.assignCounter(service.id, counter.id);
       else await API.removeCounter(service.id, counter.id);
     }
@@ -67,7 +63,24 @@ function ServiceManagement(){
     return (
         <Container>
           <Row><h1>Service Management</h1></Row>
-          <Row><Button variant='success' className="my-5" onClick={() => navigate('new')}>New Service</Button></Row>
+          {showButtons?
+            <>
+            <Row><Button variant='success' className="my-5" onClick={() => navigate('new')}>New Service</Button></Row>
+            <Row><Button variant='success' className="my-5" onClick={ () =>{
+                let servicesId: number[] = [];
+                let i:number = 0;
+                while (i < services.length){
+                  servicesId.push(services[i].id);
+                  i++;
+                }
+                API.generateQueues(servicesId);
+                setShowButtons(false);
+              }
+            }>Generate Queues</Button></Row>
+          </>
+          :
+          <></>
+          }
           <Row>
       <Table bordered hover >
         <thead>

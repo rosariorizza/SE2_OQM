@@ -168,6 +168,22 @@ const getWaitingTime = async (service: Service) => {
 
 // #region Queue
 
+const generateQueues = async (ids: number[]) => {
+  console.log(ids);
+  const response = await fetch(`${SERVER_URL}/api/queue`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ids: ids})
+  });
+  console.log(response);
+  if (response.ok) {
+    //returns the number of created queues
+    return await response.json(); 
+  } else {
+    throw new Error('Internal server error');
+  }
+};
+
 const insertIntoQueue = async (service: Service) => {
   const response = await fetch(`${SERVER_URL}/api/queque/${service.id}`, {
     method: 'PUT'
@@ -240,7 +256,7 @@ const API = {
     getServices, getService, updateService, createService, deleteService,
     getUsers, getUser, createUser, updateUser, deleteUser,
     getWaitingTime,
-    insertIntoQueue, callNextCustomer,
+    generateQueues, insertIntoQueue, callNextCustomer,
     getCounters, assignCounter, removeCounter
 };
 
