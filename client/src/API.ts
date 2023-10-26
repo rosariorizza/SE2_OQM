@@ -148,14 +148,12 @@ const deleteUser = async (id: number) => {
 // #region Time
 
 const getWaitingTime = async (service: Service) => {
-    console.log("Test");
-    console.log(service);
     const response = await fetch(SERVER_URL + `/api/services/${service.id}/estimatedTime`, {
         method: 'GET'
     });
     if(response.ok) {
-       //Compute formula, the epress the time as 2 numbers: hours and minutes
-        return {hour:1, minutes:1};
+        console.log(response);
+        return response;
     }
     else {
       throw new Error('Internal server error');

@@ -95,29 +95,32 @@ export class ServicesService {
     for(let counter of counters){
       const counterId = counter.id;
       const k_i = await this.counterServicesRepository.count({ where: { counterId: counter.id } })
-      let s_i_r = await this.counterServicesRepository.findOne({  where: { counterId: counter.id, serviceId: id }}) ? 1:0;
+      const s_i_r = await this.counterServicesRepository.findOne({  where: { counterId: counter.id, serviceId: id }}) ? 1:0;
 
-      countersParameters[counterId] = { k_i, s_i_r };
+      countersParameters.push({ counterId, k_i, s_i_r });
     }
-
+    
     const estimatedWaitingTime = this.calculateEstimatedWaitingTime(t_r, n_r, countersParameters);
-    //console.log(estimatedWaitingTime);
+    const hours = estimatedWaitingTime / 60;
+    const minutes = estimatedWaitingTime % 60;
+    console.log(hours);
+    console.log(minutes);
 
-    return { estimatedWaitingTime };
+    return { hours: hours, minutes: minutes };
   }
 
-  private calculateEstimatedWaitingTime(t_r: number, n_r: number, counters: { k_i: number; s_i_r: number }[]) {
+  private calculateEstimatedWaitingTime(t_r: number, n_r: number[], counters: { k_i: number; s_i_r: number }[]) {
     const numCounters = counters.length;
-    console.log(numCounters);
 
     let sum = 0;
     for (let i = 0; i < numCounters; i++) {
       const k_i = counters[i].k_i;
       const s_i_r = counters[i].s_i_r;
-      sum += 1 / (k_i * s_i_r);
+      sum += (1 / k_i) * s_i_r;
     }
 
-    const waitingTime = t_r * (n_r / (sum + 0.5));
+    const waitingTime = t_r * ((n_r.length / sum) + 0.5);
+
     return waitingTime;
   }
 
