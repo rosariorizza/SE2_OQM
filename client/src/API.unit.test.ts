@@ -315,7 +315,9 @@ describe('assignCounter', () => {
     await expect(API.assignCounter(mockServiceId, mockCounterId)).resolves.toBeUndefined();
 
     //Ensure the fetch function was called with the correct URL
-    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/services/${mockServiceId}/counters/${mockCounterId}`);
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/services/${mockServiceId}/counters/${mockCounterId}`, {
+      method: 'PATCH',
+    })
   });
 
   it('should throw an error when the request fails', async () => {
