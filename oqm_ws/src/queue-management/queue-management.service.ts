@@ -1,22 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-/*
-//we'll need these in a moment
 import { CounterServiceEntity } from './entities/counter-service.entity';
 import { ServiceEntity } from './entities/service.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-*/
 
 @Injectable()
 export class QueueManagementService {
-  /*
   constructor(
     @InjectRepository(ServiceEntity)
     private readonly servicesRepository: Repository<ServiceEntity>,
     @InjectRepository(CounterServiceEntity)
     private readonly counterServicesRepository: Repository<CounterServiceEntity>,
   ) {}
-  */
+
   private queueController = {};
   //the ticket number is unique for the whole office
   private customersGlobalID: number = 0;
@@ -51,7 +47,10 @@ export class QueueManagementService {
     if (this.queueController[serviceId] === undefined)
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
     this.queueController[serviceId].pop();
-    return (this.queueController[serviceId])[this.queueController[serviceId].length-1];
+    if ((this.queueController[serviceId]).length != 0)
+      return (this.queueController[serviceId])[this.queueController[serviceId].length-1];
+    else 
+      return 0;
   }
 
   removeQueue(serviceId: number) {

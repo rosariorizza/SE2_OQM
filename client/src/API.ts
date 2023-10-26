@@ -155,7 +155,7 @@ const getWaitingTime = async (service: Service) => {
     });
     if(response.ok) {
        //Compute formula, the epress the time as 2 numbers: hours and minutes
-        return {hour:1, minutes:1};
+        return {hours:1, minutes:1};
     }
     else {
       throw new Error('Internal server error');
@@ -207,6 +207,7 @@ const callNextCustomer = async (counterId: number) => {
       console.log("Customer number "+next+" to Counter #"+counterId);
     else
       console.log("No customers to serve now");
+    return next; 
   } else {
     throw new Error('Internal server error');
   }

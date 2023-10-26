@@ -72,7 +72,7 @@ describe('getService', () => {
 
 describe('createService', () => {
   const mockService = { id: 1, description: 'Service 1',  type: "Service1", time: 10 };
-  const mockServiceCreation = {description: "Service marked as 1", type: "Service1"};
+  const mockServiceCreation = {description: "Service marked as 1", type: "Service1", time:0};
 
   it('should return the created service when the request is successful', async () => {
 
@@ -104,7 +104,7 @@ describe('createService', () => {
 
 describe('updateService', () => {
   const mockService = { id: 1, description: 'Service 1',  type: "Service1", time: 10 };
-  const mockServiceCreation = { description: 'Service marked as 1', type: 'Service1' };
+  const mockServiceCreation = { description: 'Service marked as 1', type: 'Service1', time:0 };
 
   it('should return the updated service when the request is successful', async () => {
     const updatedService = { ...mockService, name: 'Updated Service 1' };
@@ -173,7 +173,7 @@ describe('deleteService', () => {
 
 describe('getWaitingTime', () => {
   const mockService = { id: 1, description: 'Service 1',  type: "Service1", time: 10 };
-  const mockQueueResponse = { hour: 1, minutes: 1 };
+  const mockQueueResponse = { hours: 1, minutes: 1 };
   
   it('should return the waiting time when the request is successful', async () => {
     //Mock the fetch response for a successful request
@@ -183,7 +183,7 @@ describe('getWaitingTime', () => {
     const result = await API.getWaitingTime(mockService);
 
     //Ensure the fetch function was called with the correct URL and method
-    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/queue/${mockService.type}`, {
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/services/${mockService.id}/estimatedTime`, {
       method: 'GET',
     });
 
@@ -274,7 +274,7 @@ describe('callNextCustomer', () => {
   const mockCounterId = 1;
   const mockRemaining = 2;
 
-  it('should return 1 and log when the request is successful', async () => {
+  it('should return 2 and log when the request is successful', async () => {
     //Mock the fetch response for a successful request
     fetchMock.mockResponse(JSON.stringify(mockRemaining), { status: 200 });
 
@@ -289,8 +289,8 @@ describe('callNextCustomer', () => {
       method: 'DELETE',
     });
 
-    //Ensure the result is 1
-    expect(result).toEqual(1);
+    //Ensure the result is 2
+    expect(result).toEqual(2);
 
     //Ensure console.log was called with the expected message
     expect(consoleLogSpy).toHaveBeenCalledWith(`Customer number ${mockRemaining} to Counter #${mockCounterId}`);
@@ -323,7 +323,7 @@ describe('getCounters', () => {
     const result = await API.getCounters();
 
     //Ensure the fetch function was called with the correct URL and method
-    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/counters`, {
+    expect(fetchMock).toHaveBeenCalledWith(`http://localhost:3000/api/services/counters`, {
       method: 'GET',
     });
 
