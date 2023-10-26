@@ -148,8 +148,6 @@ const deleteUser = async (id: number) => {
 // #region Time
 
 const getWaitingTime = async (service: Service) => {
-    console.log("Test");
-    console.log(service);
     const response = await fetch(SERVER_URL + `/api/services/${service.id}/estimatedTime`, {
         method: 'GET'
     });
