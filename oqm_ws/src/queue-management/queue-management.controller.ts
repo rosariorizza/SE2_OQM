@@ -14,6 +14,12 @@ import { CreateQueuesDto } from './dto/create-queues.dto';
 export class QueueManagementController {
   constructor(private readonly queueService: QueueManagementService) {}
 
+  @Get(':servicename')
+  getTime(@Param('servicename') servicename:string) {
+    //find time using servicename
+    return {hour:1, minutes:1};
+  }
+
   @Post()
   createQueues(@Body() createQueuesDto: CreateQueuesDto) {
     for (let current_id in createQueuesDto.ids){
