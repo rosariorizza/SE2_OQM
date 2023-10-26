@@ -12,6 +12,7 @@ export class QueueManagementService {
     if (this.queueController[serviceId] === undefined)
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
     this.queueController[serviceId] += 1;
+    return this.queueController[serviceId];
   }
 
   removeUserFromQueue(serviceId: number) {

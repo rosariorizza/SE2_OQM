@@ -156,7 +156,7 @@ const getWaitingTime = async (service: Service) => {
     });
     if(response.ok) {
        //Compute formula, the epress the time as 2 numbers: hours and minutes
-        return {hour:1, minutes:1};
+        return await response.json();
     }
     else
       throw new Error('Internal server error');
@@ -169,8 +169,8 @@ const getWaitingTime = async (service: Service) => {
 // #region Queue
 
 const insertIntoQueue = async (service: Service) => {
-  const response = await fetch(`${SERVER_URL}/queque/${service.type}`, {
-    method: 'POST'
+  const response = await fetch(`${SERVER_URL}/api/queque/${service.id}`, {
+    method: 'PUT'
   });
   if (response.ok) {
     //returns the user's waiting number
@@ -182,7 +182,7 @@ const insertIntoQueue = async (service: Service) => {
 };
 
 const callNextCustomer = async (counterId: number) => {
-  const response = await fetch(`${SERVER_URL}/services/${counterId}/next`, {
+  const response = await fetch(`${SERVER_URL}/api/queue/${counterId}/next`, {
     method: 'DELETE'
   });
   if (response.ok) {
