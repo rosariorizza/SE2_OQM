@@ -83,8 +83,7 @@ export class ServicesService {
     return this.counterServicesRepository.save({ serviceId, counterId });
   }
 
-<<<<<<< HEAD
-  async getWaitingTime(id: number) { //qua dovrebbe prendere in input un servizio, non l'id soltanto
+  async getWaitingTime(id: number) {
     const service = await this.servicesRepository.findOne({
       where: { id },
       relations: ['counterServices', 'counterServices.counter'],
@@ -96,15 +95,17 @@ export class ServicesService {
 
     const t_r = service.time;
     const n_r = this.queueManagementService.getQueueByServiceId(id);
-    const k_i = this.findAll()
+    const counters = (await this.findAllCounters());
+    const countersParameters = [];
+    for(let counter of counters){
+      const counterId = counter.id;
+      const k_i = await this.counterServicesRepository.count({ where: { counterId: counter.id } })
+      let s_i_r = await this.counterServicesRepository.findOne({  where: { counterId: counter.id, serviceId: id }}) ? 1:0;
 
+      countersParameters[counterId] = { k_i, s_i_r };
+    }
 
-    /*const counters = service.counterServices.map((cs) => ({
-      k_i: cs.counter.counterServices.length, // number of different types of requests served by counter i
-      s_i_r: cs.counter.counterServices.some((cs) => cs.service.id === id) ? 1 : 0,
-    }));
-
-    const estimatedWaitingTime = this.calculateEstimatedWaitingTime(t_r, n_r, counters);
+    const estimatedWaitingTime = this.calculateEstimatedWaitingTime(t_r, n_r, countersParameters);
     //console.log(estimatedWaitingTime);
 
     return { estimatedWaitingTime };
@@ -123,10 +124,9 @@ export class ServicesService {
 
     const waitingTime = t_r * (n_r / (sum + 0.5));
     return waitingTime;
-    */
-=======
+  }
+
   removeServiceFromCounter(serviceId: number, counterId: number) {
     return this.counterServicesRepository.delete({ serviceId, counterId });
->>>>>>> 636679dcdfbeb9c4d3d8451d60c30ff3a256ba4b
   }
 }

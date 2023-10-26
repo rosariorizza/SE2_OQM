@@ -27,11 +27,7 @@ import { QueueManagementModule } from './queue-management/queue-management.modul
         children: [
           { path: 'users', module: UsersModule },
           { path: 'services', module: ServicesModule },
-<<<<<<< HEAD
-          { path: 'queue-management', module: QueueManagementModule},
-=======
           { path: 'queue', module: QueueManagementModule }
->>>>>>> 636679dcdfbeb9c4d3d8451d60c30ff3a256ba4b
         ],
       },
     ]),
