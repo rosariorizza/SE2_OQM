@@ -10,11 +10,7 @@ function CounterOfficerDashboard(){
 
     const handleButtonClick = async () => {
         try {
-          const customer = await API.callNextCustomer(counter);
-          if(customer){
-            console.log(`Next customer: ${customer.toString()}`);
-          }
-          
+          await API.callNextCustomer(counter);
         } catch (error) {
           console.error(error);
         }

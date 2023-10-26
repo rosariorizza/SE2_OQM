@@ -37,7 +37,7 @@ export class QueueManagementController {
 
   @Delete(':counterId/next') // Add /next to the route for delete
   remove(@Param('counterId') counterId: number) {
-    return this.queueService.removeUserFromQueue(counterId);
+    return this.queueService.callNextUser(counterId);
   }
 
   
