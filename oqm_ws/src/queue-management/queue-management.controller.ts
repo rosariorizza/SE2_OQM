@@ -14,6 +14,12 @@ import { CreateQueuesDto } from './dto/create-queues.dto';
 export class QueueManagementController {
   constructor(private readonly queueService: QueueManagementService) {}
 
+  @Get()
+  getAllQueues() {
+    //find time using servicename
+    return this.queueService.getQueues();
+  }
+
   @Get(':servicename')
   getTime(@Param('servicename') servicename:string) {
     //find time using servicename
@@ -37,7 +43,7 @@ export class QueueManagementController {
 
   @Delete(':counterId/next') // Add /next to the route for delete
   remove(@Param('counterId') counterId: number) {
-    return this.queueService.callNextUser(counterId);
+    return this.queueService.removeUserFromQueue(counterId);
   }
 
   

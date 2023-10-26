@@ -174,6 +174,7 @@ const generateQueues = async (ids: number[]) => {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ids: ids})
   });
+  console.log("Generated IDS: "+ids);
   if (response.ok) {
     //returns the number of created queues
     return await response.json(); 

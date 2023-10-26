@@ -79,6 +79,7 @@ export class ServicesService {
   }
 
   async getWaitingTime(id: number) {
+    /*
     const service = await this.servicesRepository.findOne({
       where: { id },
       relations: ['counterServices', 'counterServices.counter'],
@@ -102,7 +103,8 @@ export class ServicesService {
 
     const estimatedWaitingTime = this.calculateEstimatedWaitingTime(t_r, n_r, countersParameters);
     //console.log(estimatedWaitingTime);
-
+    */
+   const estimatedWaitingTime = {hours:-1, minutes:-1};
     return { estimatedWaitingTime };
   }
 
