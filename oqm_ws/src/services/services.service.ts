@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { CounterServiceEntity } from './entities/counter-service.entity';
 import { CounterEntity } from './entities/counter.entity';
 import { QueueManagementService } from 'src/queue-management/queue-management.service';
+import {round} from 'mathjs';
 
 @Injectable()
 export class ServicesService {
@@ -101,12 +102,18 @@ export class ServicesService {
     }
     
     const estimatedWaitingTime = this.calculateEstimatedWaitingTime(t_r, n_r, countersParameters);
-    const hours = estimatedWaitingTime / 60;
-    const minutes = estimatedWaitingTime % 60;
-    console.log(hours);
-    console.log(minutes);
-
-    return { hours: hours, minutes: minutes };
+    const hours = round(estimatedWaitingTime / 60);
+    const minutes = round(estimatedWaitingTime % 60);
+    let time = {hours:"", minutes:""};
+        if(hours<10)
+          time.hours = "0"+hours.toString();
+        else
+          time.hours = (hours).toString();
+        if(minutes<10)
+          time.minutes = "0"+(minutes).toString();
+        else
+          time.minutes = (minutes).toString();
+    return time;
   }
 
   private calculateEstimatedWaitingTime(t_r: number, n_r: number[], counters: { k_i: number; s_i_r: number }[]) {
@@ -120,7 +127,6 @@ export class ServicesService {
     }
 
     const waitingTime = t_r * ((n_r.length / sum) + 0.5);
-    console.log(waitingTime);
     return waitingTime;
   }
 

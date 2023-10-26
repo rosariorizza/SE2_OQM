@@ -10,12 +10,9 @@ export class CounterEntity {
   @Column({ type: 'varchar', length: 255 })
   description: string;
 
-  @Column({
-    type: 'enum',
-    enum: CounterTypeEnum,
-    nullable: false,
-  })
-  type: CounterTypeEnum;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  type: string;
+
 
   @OneToMany(
     () => CounterServiceEntity,

@@ -154,7 +154,6 @@ const getWaitingTime = async (service: Service) => {
     if(response.ok) {
        //Compute formula, the epress the time as 2 numbers: hours and minutes
         const time: Time = await response.json();
-        console.log(time);
         return time;
 
     }

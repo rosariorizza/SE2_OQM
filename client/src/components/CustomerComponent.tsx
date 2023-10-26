@@ -102,7 +102,9 @@ const WaitingTimeDisplay: React.FC<WaitingTimeDisplayProps> = ({
 
   return (
     <div>
-      <h2>Waiting Time: {waitingTime ? `${waitingTime.hours}:${waitingTime.minutes}` : 'Loading...'}</h2>
+      <h2>Waiting Time: {waitingTime ? 
+      `${waitingTime.hours}:${waitingTime.minutes}`
+      : 'Loading...'}</h2>
       <button onClick={() => {
         accept(true);
       }}>Accept</button>
