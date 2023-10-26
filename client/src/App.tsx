@@ -8,7 +8,7 @@ import TemporaryHome from './components/TemporaryHomeComponent';
 import Login from './components/AuthComponents';
 import { useState } from 'react';
 import Queue from './components/QueueComponent';
-import { AdminDashboard, CounterOfficerDashboard } from './components/DashboardComponent';
+import { ServiceManagement, CounterOfficerDashboard, ServiceForm } from './components/DashboardComponent';
 
 
 
@@ -38,15 +38,15 @@ function App() {
               element={<Customer/>} />
 
 
-        { loggedIn && isAdmin &&
-        <Route path='dashboard'
-              element={<AdminDashboard/>} />
-        }
-        { loggedIn && !isAdmin &&
+        <Route path='services'
+              element={<ServiceManagement/>} />
+        <Route path='services/new'
+              element={<ServiceForm/>} />
+        <Route path='services/:id'
+              element={<ServiceForm/>} />
+
         <Route path='dashboard'
               element={<CounterOfficerDashboard/>} />
-        }
-
 
         <Route path='*' element={<NotFound />} />
 

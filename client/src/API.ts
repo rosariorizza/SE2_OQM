@@ -1,4 +1,4 @@
-import { Service, ServiceCreation, User, UserCreation} from "./models";
+import { Counter, Service, ServiceCreation, User, UserCreation} from "./models";
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -26,7 +26,8 @@ const createService = async (service: ServiceCreation) => {
     const response = await fetch(`${SERVER_URL}/api/services`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(service),
+        body: JSON.stringify({...service, time: 0}),
+        //should be fixed
       });
     if(response.ok) {
         const service : Service = await response.json();
@@ -37,7 +38,7 @@ const createService = async (service: ServiceCreation) => {
 }
 const updateService = async (id: number, service: ServiceCreation) => {
     const response = await fetch(`${SERVER_URL}/api/services/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(service),
       });
@@ -197,12 +198,46 @@ const callNextCustomer = async (counterId: number) => {
 
 // #endregion
 
+// #region Counter
+
+const getCounters = async () => {
+  const response = await fetch(SERVER_URL + '/api/counters');
+  if(response.ok) {
+      const counters : Counter[] = await response.json();
+      return counters;
+  }
+  else
+    throw new Error('Internal server error');
+}
+
+const assignCounter = async (serviceId: number, counterId: number) => {
+  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters/${counterId}`);
+  if(response.ok) {
+    return;
+  }
+  else
+    throw new Error('Internal server error');
+}
+const removeCounter = async (serviceId: number, counterId: number) => {
+  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters/${counterId}`, {
+    method: 'DELETE'
+  });
+  if(response.ok) {
+    return;
+  }
+  else
+    throw new Error('Internal server error');
+}
+
+// #endregion
+
 
 const API = {
     getServices, getService, updateService, createService, deleteService,
     getUsers, getUser, createUser, updateUser, deleteUser,
     getWaitingTime,
-    insertIntoQueue, callNextCustomer
+    insertIntoQueue, callNextCustomer,
+    getCounters, assignCounter, removeCounter
 };
 
 export default API;

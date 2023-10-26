@@ -15,7 +15,7 @@ function TemporaryHome({ setLoggedIn, setIsAdmin }: TemporaryHomeProps ) {
   const goToDashboardAsAdmin = () => {
     setIsAdmin(true);
     setLoggedIn(true);
-    navigate('/dashboard');
+    navigate('/services');
   };
 
   const goToDashboardAsUser = () => {
