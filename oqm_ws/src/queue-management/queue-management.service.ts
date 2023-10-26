@@ -19,7 +19,12 @@ export class QueueManagementService {
   addUserToQueue(serviceId: number, userId: number) {
     if (!this.queueController[serviceId])
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
+<<<<<<< HEAD
     this.queueController[serviceId].add(userId);
+=======
+    this.queueController[serviceId] += 1;
+    return this.queueController[serviceId];
+>>>>>>> 636679dcdfbeb9c4d3d8451d60c30ff3a256ba4b
   }
 
   removeUserFromQueue(serviceId: number, userId: number) {

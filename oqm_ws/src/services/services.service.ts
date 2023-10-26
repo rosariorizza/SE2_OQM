@@ -24,6 +24,10 @@ export class ServicesService {
     return this.servicesRepository.save(createServiceDto);
   }
 
+  findAllCounters() {
+    return this.countersRepository.find();
+  }
+
   async findAll(counterId?: number) {
     if (counterId) {
       const counter = await this.countersRepository.findOne({
@@ -79,6 +83,7 @@ export class ServicesService {
     return this.counterServicesRepository.save({ serviceId, counterId });
   }
 
+<<<<<<< HEAD
   async getWaitingTime(id: number) { //qua dovrebbe prendere in input un servizio, non l'id soltanto
     const service = await this.servicesRepository.findOne({
       where: { id },
@@ -119,5 +124,9 @@ export class ServicesService {
     const waitingTime = t_r * (n_r / (sum + 0.5));
     return waitingTime;
     */
+=======
+  removeServiceFromCounter(serviceId: number, counterId: number) {
+    return this.counterServicesRepository.delete({ serviceId, counterId });
+>>>>>>> 636679dcdfbeb9c4d3d8451d60c30ff3a256ba4b
   }
 }

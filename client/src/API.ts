@@ -154,10 +154,12 @@ const getWaitingTime = async (service: Service) => {
         method: 'GET'
     });
     if(response.ok) {
-       console.log(response);
+       //Compute formula, the epress the time as 2 numbers: hours and minutes
+        return {hour:1, minutes:1};
     }
-    else
+    else {
       throw new Error('Internal server error');
+    }
 }
 
 // #endregion
@@ -167,8 +169,8 @@ const getWaitingTime = async (service: Service) => {
 // #region Queue
 
 const insertIntoQueue = async (service: Service) => {
-  const response = await fetch(`${SERVER_URL}/queque/${service.type}`, {
-    method: 'POST'
+  const response = await fetch(`${SERVER_URL}/api/queque/${service.id}`, {
+    method: 'PUT'
   });
   if (response.ok) {
     //returns the user's waiting number
@@ -180,7 +182,7 @@ const insertIntoQueue = async (service: Service) => {
 };
 
 const callNextCustomer = async (counterId: number) => {
-  const response = await fetch(`${SERVER_URL}/services/${counterId}/next`, {
+  const response = await fetch(`${SERVER_URL}/api/queue/${counterId}/next`, {
     method: 'DELETE'
   });
   if (response.ok) {
@@ -199,7 +201,9 @@ const callNextCustomer = async (counterId: number) => {
 // #region Counter
 
 const getCounters = async () => {
-  const response = await fetch(SERVER_URL + '/api/counters');
+  const response = await fetch(SERVER_URL + '/api/counters', {
+    method: 'GET'
+  });
   if(response.ok) {
       const counters : Counter[] = await response.json();
       return counters;
@@ -209,7 +213,9 @@ const getCounters = async () => {
 }
 
 const assignCounter = async (serviceId: number, counterId: number) => {
-  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters/${counterId}`);
+  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters/${counterId}`, {
+    method: 'PATCH'
+  });
   if(response.ok) {
     return;
   }

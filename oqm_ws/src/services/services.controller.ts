@@ -26,9 +26,15 @@ export class ServicesController {
     return this.servicesService.findAll(counterId);
   }
 
+<<<<<<< HEAD
   @Get(':id/estimatedTime')
   getEstimatedTime(@Param('id') id: number) {
     return this.servicesService.getWaitingTime(id);
+=======
+  @Get('counters')
+  findAllCounters() {
+    return this.servicesService.findAllCounters();
+>>>>>>> 636679dcdfbeb9c4d3d8451d60c30ff3a256ba4b
   }
 
   @Get(':id/counters')
@@ -57,5 +63,13 @@ export class ServicesController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.servicesService.remove(+id);
+  }
+
+  @Delete(':id/counters/:counterId')
+  deleteServiceFromCounter(
+    @Param('id') id: number,
+    @Param('counterId') counterId: number,
+  ) {
+    return this.servicesService.removeServiceFromCounter(+id, counterId);
   }
 }
