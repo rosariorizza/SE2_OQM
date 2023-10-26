@@ -5,19 +5,19 @@ export class QueueManagementService {
   private queueController = {};
 
   createQueue(serviceId: number) {
-    this.queueController[serviceId] = new Set();
+    this.queueController[serviceId] = 0;
   }
 
-  addUserToQueue(serviceId: number, userId: number) {
-    if (!this.queueController[serviceId])
+  addUserToQueue(serviceId: number) {
+    if (this.queueController[serviceId] === undefined)
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
-    this.queueController[serviceId].add(userId);
+    this.queueController[serviceId] += 1;
   }
 
-  removeUserFromQueue(serviceId: number, userId: number) {
-    if (!this.queueController[serviceId])
+  removeUserFromQueue(serviceId: number) {
+    if (this.queueController[serviceId] === undefined)
       throw new HttpException('Queue does not exist', HttpStatus.BAD_REQUEST);
-    this.queueController[serviceId].delete(userId);
+    this.queueController[serviceId] -= 1;
   }
 
   removeQueue(serviceId: number) {

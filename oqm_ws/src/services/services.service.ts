@@ -5,12 +5,15 @@ import { ServiceEntity } from './entities/service.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CounterServiceEntity } from './entities/counter-service.entity';
+import { CounterEntity } from './entities/counter.entity';
 
 @Injectable()
 export class ServicesService {
   constructor(
     @InjectRepository(ServiceEntity)
     private readonly servicesRepository: Repository<ServiceEntity>,
+    @InjectRepository(CounterEntity)
+    private readonly countersRepository: Repository<CounterEntity>,
     @InjectRepository(CounterServiceEntity)
     private readonly counterServicesRepository: Repository<CounterServiceEntity>,
   ) {}
@@ -19,8 +22,26 @@ export class ServicesService {
     return this.servicesRepository.save(createServiceDto);
   }
 
-  findAll() {
-    return this.servicesRepository.find();
+  async findAll(counterId?: number) {
+    if (counterId) {
+      const counter = await this.countersRepository.findOne({
+        where: { id: counterId },
+        relations: ['counterServices', 'counterServices.service'],
+      });
+
+      if (!counter) {
+        throw new NotFoundException(`Counter with ID ${counterId} not found`);
+      }
+
+      return counter.counterServices.map((cs) => ({
+        id: cs.service.id,
+        description: cs.service.description,
+        type: cs.service.type,
+        time: cs.service.time,
+      }));
+    } else {
+      return this.servicesRepository.find();
+    }
   }
 
   findOne(id: number) {
