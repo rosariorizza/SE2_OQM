@@ -26,7 +26,7 @@ const createService = async (service: ServiceCreation) => {
     const response = await fetch(`${SERVER_URL}/api/services`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...service, time: 0}),
+        body: JSON.stringify(service),
         //should be fixed
       });
     if(response.ok) {
@@ -216,7 +216,19 @@ const callNextCustomer = async (counterId: number) => {
 // #region Counter
 
 const getCounters = async () => {
-  const response = await fetch(SERVER_URL + '/api/counters', {
+  const response = await fetch(SERVER_URL + '/api/services/counters', {
+    method: 'GET'
+  });
+  if(response.ok) {
+      const counters : Counter[] = await response.json();
+      return counters;
+  }
+  else
+    throw new Error('Internal server error');
+}
+
+const getAssignedCounters = async (serviceId: number) => {
+  const response = await fetch(SERVER_URL + `/api/services/${serviceId}/counters`, {
     method: 'GET'
   });
   if(response.ok) {
@@ -256,7 +268,8 @@ const API = {
     getUsers, getUser, createUser, updateUser, deleteUser,
     getWaitingTime,
     generateQueues, insertIntoQueue, callNextCustomer,
-    getCounters, assignCounter, removeCounter
+    getCounters, assignCounter, removeCounter, getAssignedCounters
+
 };
 
 export default API;

@@ -8,9 +8,20 @@ export interface Service{
     time: number;
 }
 
-export interface ServiceCreation{
+
+export interface ServiceCounters{
+    id: number;
     description: string;
     //type: ServiceTypeEnum
+    type: string;
+    time: number;
+    counters: Counter[]
+}
+
+
+export interface ServiceCreation{
+    description: string;
+    time: number;
     type: string
 }
 
@@ -58,6 +69,9 @@ export interface Counter{
     type: string;
     description: string;
 }
+
+
+
 
 // #endregion
 
