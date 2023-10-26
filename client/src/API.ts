@@ -148,8 +148,8 @@ const deleteUser = async (id: number) => {
 // #region Time
 
 const getWaitingTime = async (service: Service) => {
-    //TODO: create the queque management and change the url to get the queque
-    // the queque should have all the field required for the Formula.
+    //TODO: create the queue management and change the url to get the queue
+    // the queue should have all the field required for the Formula.
     // A safer option would be to implement the computation on the server side and just return the time
     const response = await fetch(SERVER_URL + `/api/queue/${service.type}`, {
         method: 'GET'
@@ -185,7 +185,7 @@ const generateQueues = async (ids: number[]) => {
 };
 
 const insertIntoQueue = async (service: Service) => {
-  const response = await fetch(`${SERVER_URL}/api/queque/${service.id}`, {
+  const response = await fetch(`${SERVER_URL}/api/queue/${service.id}`, {
     method: 'PUT'
   });
   if (response.ok) {
